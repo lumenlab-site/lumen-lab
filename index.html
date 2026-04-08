@@ -1,673 +1,108 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumen Lab | Estrategia, Diseño y Resultados</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Syne', 'sans-serif'],
-                    },
-                    colors: {
-                        neon: '#ccff00',
-                        dark: '#030303',
-                        card: '#0a0a0a',
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lumen Lab | Estrategia, Diseño y Resultados</title>
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <style>
-        /* Base y Utilidades */
-        body {
-            background-color: #030303;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter'],display:['Syne']},colors:{neon:'#ccff00',dark:'#030303'}}}}
+</script>
 
-        /* Textura de ruido premium */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
+<script src="https://unpkg.com/lucide@latest"></script>
 
-        /* Efectos Neon */
-        .glow-text {
-            text-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
-        }
-        
-        .btn-neon {
-            background-color: #ccff00;
-            color: #030303;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-neon::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
-        }
+<style>
+html,body{overflow-x:hidden;background:#030303;color:#fff}
+.noise{position:fixed;inset:0;opacity:.03;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-        .btn-neon:hover {
-            box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .btn-neon:hover::after {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            transition: 0s;
-        }
+.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:.12}
 
-        /* Animaciones Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.btn{transition:.25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(204,255,0,.25)}
 
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);transition:.3s}
+.card:hover{transform:translateY(-6px);border-color:rgba(204,255,0,.5)}
 
-        /* Marquee continuo */
-        .marquee-container {
-            display: flex;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 100vw;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .marquee-content {
-            display: flex;
-            animation: scroll 20s linear infinite;
-        }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+.reveal{opacity:0;transform:translateY(30px);transition:.7s}
+.reveal.active{opacity:1;transform:none}
 
-        /* Cards Hover */
-        .service-card {
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.4s ease;
-        }
-        
-        .service-card:hover {
-            border-color: rgba(204, 255, 0, 0.5);
-            background: linear-gradient(180deg, rgba(204,255,0,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            transform: translateY(-5px);
-        }
+/* Sticky CTA */
+.sticky-cta{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50}
 
-        .service-card .icon-wrapper {
-            transition: all 0.4s ease;
-        }
-        
-        .service-card:hover .icon-wrapper {
-            color: #ccff00;
-            transform: scale(1.1);
-        }
-
-        /* Portfolio abstract placeholders */
-        .portfolio-item {
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .portfolio-img-1 { background: linear-gradient(45deg, #030303, #1a1a1a, #0a1f0f); }
-        .portfolio-img-2 { background: linear-gradient(135deg, #050505, #111, #1f200a); }
-        
-        .portfolio-item:hover img, .portfolio-item:hover .portfolio-bg {
-            transform: scale(1.05);
-        }
-        
-        .portfolio-bg {
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Glow Orbs */
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Logo Carousel */
-        .logo-carousel-container {
-            width: 100%;
-            overflow: hidden;
-            /* Crea un difuminado en los bordes para que los logos aparezcan y desaparezcan suavemente */
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-        
-        .logo-carousel {
-            display: flex;
-            width: max-content;
-            animation: scroll-logos 35s linear infinite;
-        }
-        
-        .logo-carousel:hover {
-            animation-play-state: paused;
-        }
-        
-        @keyframes scroll-logos {
-            to { transform: translateX(-50%); }
-        }
-    </style>
+</style>
 </head>
-<body class="antialiased selection:bg-neon selection:text-dark">
 
-    <div class="noise-overlay"></div>
+<body class="font-sans">
+<div class="noise"></div>
 
-    <!-- Navegación -->
-    <nav class="fixed w-full top-0 z-40 bg-dark/80 backdrop-blur-md border-b border-white/10 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center justify-center group">
-                <img src="/logo.png" alt="Lumen Lab logo" class="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
-            </a>
-            <div class="hidden md:flex gap-8 items-center text-sm font-medium text-gray-400">
-                <a href="#servicios" class="hover:text-white transition-colors">Servicios</a>
-                <a href="#metodologia" class="hover:text-white transition-colors">Metodología</a>
-                <a href="#resultados" class="hover:text-white transition-colors">Resultados</a>
-            </div>
-            <a href="#contacto" class="hidden md:inline-flex px-6 py-2.5 text-sm font-semibold btn-neon rounded-full">
-                Contactar
-            </a>
-            <button id="menu-toggle" class="md:hidden text-white p-2">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-        </div>
-    </nav>
+<!-- NAV -->
+<nav class="fixed w-full top-0 bg-black/70 backdrop-blur border-b border-white/10 z-40">
+<div class="max-w-6xl mx-auto px-5 h-16 flex justify-between items-center">
+<img src="/logo.png" class="h-8">
+<button id="menuBtn"><i data-lucide="menu"></i></button>
+</div>
+</nav>
 
-    <!-- Menú Móvil (Overlay) -->
-    <div id="mobile-menu" class="fixed inset-0 bg-[#030303]/98 backdrop-blur-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
-        <button id="close-menu" class="absolute top-6 right-6 text-white p-2">
-            <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
-        <div class="flex flex-col gap-8 text-center text-2xl font-display font-bold w-full px-6">
-            <a href="#servicios" class="mobile-link hover:text-neon transition-colors">Servicios</a>
-            <a href="#metodologia" class="mobile-link hover:text-neon transition-colors">Metodología</a>
-            <a href="#resultados" class="mobile-link hover:text-neon transition-colors">Casos de Estudio</a>
-            <a href="#contacto" class="mobile-link btn-neon px-8 py-4 rounded-full text-lg mt-4 w-full text-dark">Contactar</a>
-        </div>
-    </div>
+<!-- HERO -->
+<header class="min-h-screen flex items-center justify-center text-center px-5 relative">
+<div class="glow w-[300px] h-[300px] bg-neon top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
 
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <div class="glow-orb w-[600px] h-[600px] bg-neon top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8 reveal">
-                <span class="w-2 h-2 rounded-full bg-neon shadow-[0_0_10px_#ccff00]"></span>
-                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-300">Branding • Growth • Impact</span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter leading-[1.05] mb-8 reveal reveal-delay-1">
-                Agencia digital <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">360º para</span> <br class="hidden lg:block"/>
-                <span class="text-neon glow-text italic">marcas líderes.</span>
-            </h1>
-            
-            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 font-light reveal reveal-delay-2">
-                Centraliza todo tu crecimiento en un solo partner estratégico. Diseñamos identidades memorables, desarrollamos webs y apps de alto rendimiento, y ejecutamos marketing digital orientado a resultados.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal reveal-delay-3">
-                <a href="https://wa.me/525643132403" target="_blank" rel="noopener noreferrer" class="btn-neon px-8 py-4 rounded-full font-semibold text-lg w-full sm:w-auto flex items-center justify-center gap-2">
-                    Hablemos por WhatsApp <i data-lucide="message-circle" class="w-5 h-5"></i>
-                </a>
-                <a href="#resultados" class="px-8 py-4 rounded-full font-medium text-lg border border-white/20 hover:bg-white/5 transition-colors w-full sm:w-auto flex items-center justify-center group">
-                    Ver Casos de Éxito <i data-lucide="bar-chart" class="w-5 h-5 ml-2 text-gray-500 group-hover:text-neon transition-colors"></i>
-                </a>
-            </div>
+<div class="max-w-3xl">
 
-            <!-- Carrusel de Marcas Animado -->
-            <div class="mt-20 pt-10 border-t border-white/10 reveal reveal-delay-3 w-full">
-                <p class="text-sm text-gray-500 uppercase tracking-widest font-semibold text-center mb-8">Marcas e instituciones que confían en nuestro ecosistema</p>
-                <div class="logo-carousel-container">
-                    <div class="logo-carousel opacity-40 hover:opacity-100 transition-opacity duration-500 flex items-center gap-16 md:gap-24 px-8">
-                        <!-- Set 1 -->
-                        <span class="font-display font-bold text-2xl md:text-3xl text-white">Forbes</span>
-                        <span class="font-sans font-black text-2xl md:text-3xl tracking-tighter text-white">Spotify</span>
-                        <span class="font-serif italic text-2xl md:text-3xl text-white">Vogue</span>
-                        <span class="font-display font-bold text-2xl md:text-3xl tracking-widest uppercase text-white">Sony</span>
-                        <span class="font-sans font-bold text-2xl md:text-3xl lowercase text-white">amazon</span>
-                        <span class="font-display font-black text-2xl md:text-3xl text-white">SAMSUNG</span>
-                        <span class="font-sans font-bold text-2xl md:text-3xl tracking-tight text-white">TechCrunch</span>
-                        
-                        <!-- Set 2 (Duplicado exacto para el efecto de scroll infinito) -->
-                        <span class="font-display font-bold text-2xl md:text-3xl text-white">Forbes</span>
-                        <span class="font-sans font-black text-2xl md:text-3xl tracking-tighter text-white">Spotify</span>
-                        <span class="font-serif italic text-2xl md:text-3xl text-white">Vogue</span>
-                        <span class="font-display font-bold text-2xl md:text-3xl tracking-widest uppercase text-white">Sony</span>
-                        <span class="font-sans font-bold text-2xl md:text-3xl lowercase text-white">amazon</span>
-                        <span class="font-display font-black text-2xl md:text-3xl text-white">SAMSUNG</span>
-                        <span class="font-sans font-bold text-2xl md:text-3xl tracking-tight text-white">TechCrunch</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+<h1 class="text-4xl sm:text-6xl font-display font-bold leading-tight mb-6 reveal">
+Escalamos marcas con 
+<span class="text-neon">diseño y estrategia</span>
+</h1>
 
-    <!-- Marquee Value Reveal -->
-    <section class="py-12 bg-neon text-dark overflow-hidden transform -rotate-1 scale-105">
-        <div class="marquee-container border-none">
-            <div class="marquee-content font-display font-bold text-5xl md:text-7xl uppercase tracking-tighter py-4 items-center">
-                <span class="mx-8">Conversión</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8 text-transparent" style="-webkit-text-stroke: 1px #030303;">Escalabilidad</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8">ROI Positivo</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8 text-transparent" style="-webkit-text-stroke: 1px #030303;">Dominio</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8">Conversión</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8 text-transparent" style="-webkit-text-stroke: 1px #030303;">Escalabilidad</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8">ROI Positivo</span> <span class="mx-8 text-2xl">•</span>
-                <span class="mx-8 text-transparent" style="-webkit-text-stroke: 1px #030303;">Dominio</span> <span class="mx-8 text-2xl">•</span>
-            </div>
-        </div>
-    </section>
+<p class="text-gray-400 mb-8 reveal">
+Web, branding y marketing en un solo ecosistema.
+</p>
 
-    <!-- Manifesto / Diferenciación -->
-    <section id="metodologia" class="py-32 relative">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-6xl font-display font-bold mb-10 reveal leading-tight">
-                No contrates 5 agencias distintas.<br />
-                <span class="text-gray-500">Somos tu ecosistema integral.</span>
-            </h2>
-            <div class="grid md:grid-cols-3 gap-12 mt-20 text-left relative z-10">
-                <div class="reveal reveal-delay-1 p-8 rounded-3xl bg-white/5 border border-white/5 hover:border-neon/30 transition-colors">
-                    <div class="w-12 h-12 rounded-full border border-neon/30 flex items-center justify-center mb-6 text-neon bg-neon/5">
-                        <i data-lucide="crosshair" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Ingeniería de Conversión</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">No dejamos nada al azar. Utilizamos datos, mapas de calor y psicología del consumidor para guiar a tus visitantes hacia el botón de compra o reserva.</p>
-                </div>
-                <div class="reveal reveal-delay-2 p-8 rounded-3xl bg-white/5 border border-white/5 hover:border-neon/30 transition-colors">
-                    <div class="w-12 h-12 rounded-full border border-neon/30 flex items-center justify-center mb-6 text-neon bg-neon/5">
-                        <i data-lucide="rocket" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Sistemas Predecibles</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">Dejamos de depender de la suerte o el "boca a boca". Implementamos embudos de adquisición que generan leads cualificados y ventas todos los días.</p>
-                </div>
-                <div class="reveal reveal-delay-3 p-8 rounded-3xl bg-white/5 border border-white/5 hover:border-neon/30 transition-colors">
-                    <div class="w-12 h-12 rounded-full border border-neon/30 flex items-center justify-center mb-6 text-neon bg-neon/5">
-                        <i data-lucide="award" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Autoridad Absoluta</h3>
-                    <p class="text-gray-400 font-light leading-relaxed">Tu marca debe verse tan cara como el servicio que ofreces. Elevamos tu percepción de valor para que puedas cobrar más y evitar clientes tóxicos.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Servicios -->
-    <section id="servicios" class="py-24 bg-card relative z-10 border-y border-white/5">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal">
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-4">Soluciones Integrales 360º</h2>
-                    <p class="text-gray-400 text-lg max-w-xl">Desde la creación de tu marca y plataforma tecnológica (Web/App), hasta las campañas que multiplicarán tu facturación.</p>
-                </div>
-                <a href="#contacto" class="text-neon hover:text-white transition-colors flex items-center gap-2 font-medium uppercase tracking-widest text-sm whitespace-nowrap">
-                    Ver todos los servicios <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Tarjeta 1 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="pen-tool" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Branding & Diseño</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Construimos marcas con propósito. Identidades visuales que proyectan autoridad, elevan tu estatus y conectan con tu audiencia ideal.</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Naming & Logotipos</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Identidad Corporativa</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> UI / UX Design</li>
-                    </ul>
-                </div>
-
-                <!-- Tarjeta 2 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal reveal-delay-1">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="laptop" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Desarrollo Web</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Sitios web y tiendas online (E-commerce) a medida. Ultrarrápidas, optimizadas para SEO y diseñadas para maximizar la conversión.</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Webs Corporativas</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> E-commerce (Shopify/Woo)</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Landing Pages de Alta Conversión</li>
-                    </ul>
-                </div>
-
-                <!-- Tarjeta 3 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal reveal-delay-2">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="smartphone" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Desarrollo de Apps</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Llevamos tu negocio al bolsillo de tus clientes. Desarrollo de aplicaciones móviles, plataformas Web (SaaS) y sistemas a medida.</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Apps Nativas iOS & Android</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Aplicaciones Web (WebApps)</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Portales de Usuarios</li>
-                    </ul>
-                </div>
-
-                <!-- Tarjeta 4 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="target" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Performance & Ads</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Compramos tráfico cualificado y lo convertimos en ventas reales. Publicidad digital agresiva y orientada a Retorno de Inversión (ROAS).</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Google Ads & SEM</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Meta Ads (Facebook/Instagram)</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> TikTok & LinkedIn Ads</li>
-                    </ul>
-                </div>
-
-                <!-- Tarjeta 5 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal reveal-delay-1">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="search" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Posicionamiento SEO</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Dominamos los motores de búsqueda. Estrategias de posicionamiento orgánico técnico para captar clientes sin depender de pagar por clic.</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> SEO Técnico y Auditorías</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Linkbuilding & Autoridad</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> SEO Local y para E-commerce</li>
-                    </ul>
-                </div>
-
-                <!-- Tarjeta 6 -->
-                <div class="service-card p-8 md:p-10 rounded-3xl reveal reveal-delay-2">
-                    <div class="icon-wrapper w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                        <i data-lucide="share-2" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-bold mb-4">Social & Contenido</h3>
-                    <p class="text-gray-400 mb-6 text-base font-light">Creamos comunidades y fidelizamos audiencias. Construimos embudos de confianza a través de contenido estratégico y automatizaciones.</p>
-                    <ul class="space-y-2 mb-4 text-sm">
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Gestión de Redes Sociales</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Content & Video Marketing</li>
-                        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="check" class="w-4 h-4 text-neon"></i> Email Marketing Automatizado</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio / Casos -->
-    <section id="resultados" class="py-32">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <span class="text-neon font-medium tracking-widest text-sm uppercase mb-4 block">No hablamos. Demostramos.</span>
-                <h2 class="text-4xl md:text-6xl font-display font-bold">Casos de Estudio</h2>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                <!-- Caso 1: Spotify -->
-                <div class="group flex flex-col reveal bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-neon/30 transition-colors duration-300">
-                    <div class="w-full aspect-video relative overflow-hidden">
-                        <!-- Imagen corregida a logo/estética de Spotify -->
-                        <img src="/spotify.png" alt="Spotify App" class="w-full h-full object-cover brightness-90 hover:brightness-110 transition duration-500">" alt="Caso de Estudio Spotify App" class="absolute inset-0 w-full h-full object-cover portfolio-bg transform group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-80"></div>
-                        <div class="absolute bottom-6 left-6">
-                            <span class="px-3 py-1 bg-[#1DB954]/20 border border-[#1DB954]/30 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase text-[#1DB954] mb-3 inline-block">Spotify LATAM</span>
-                            <h3 class="text-2xl font-display font-bold text-white">Expansión de Usuarios Premium</h3>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <p class="text-gray-400 font-light text-sm mb-8 line-clamp-3">Implementación de campañas de performance hiper-segmentadas y rediseño enfocado en CRO del funnel de conversión In-App para mercados emergentes.</p>
-                        
-                        <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
-                            <div>
-                                <p class="text-3xl font-display font-bold text-neon mb-1">+185%</p>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wide font-medium">Suscripciones</p>
-                            </div>
-                            <div>
-                                <p class="text-3xl font-display font-bold text-white mb-1">-35%</p>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wide font-medium">Costo (CAC)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Caso 2: Nike -->
-                <div class="group flex flex-col reveal reveal-delay-1 bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-neon/30 transition-colors duration-300">
-                    <div class="w-full aspect-video relative overflow-hidden">
-                        <!-- Imagen actualizada a estética Nike (Tenis icónico) -->
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80" alt="Caso de Estudio Nike E-commerce" class="absolute inset-0 w-full h-full object-cover portfolio-bg transform group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-80"></div>
-                        <div class="absolute bottom-6 left-6">
-                            <span class="px-3 py-1 bg-white/20 border border-white/30 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase text-white mb-3 inline-block">Nike Direct</span>
-                            <h3 class="text-2xl font-display font-bold text-white">Optimización E-commerce D2C</h3>
-                        </div>
-                    </div>
-                    <div class="p-8">
-                        <p class="text-gray-400 font-light text-sm mb-8 line-clamp-3">Arquitectura web escalable de alto rendimiento y creación de embudos de escasez con estrategias de up-selling basadas en el comportamiento del usuario.</p>
-                        
-                        <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
-                            <div>
-                                <p class="text-3xl font-display font-bold text-neon mb-1">5.8x</p>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wide font-medium">Retorno (ROAS)</p>
-                            </div>
-                            <div>
-                                <p class="text-3xl font-display font-bold text-white mb-1">+42%</p>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wide font-medium">Ticket Medio</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section id="contacto" class="py-32 relative overflow-hidden">
-        <div class="glow-orb w-[800px] h-[800px] bg-neon top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
-        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 bg-dark/50 backdrop-blur-xl border border-white/10 p-12 md:p-20 rounded-[3rem] reveal hover:border-neon/30 transition-colors duration-500">
-            <div class="inline-block px-5 py-2 bg-neon/10 border border-neon/20 rounded-full text-neon text-xs font-bold uppercase tracking-widest mb-6">
-                <i data-lucide="zap" class="w-4 h-4 inline mr-1 -mt-1"></i> Sin formularios largos
-            </div>
-            <h2 class="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">Comienza tu <span class="text-neon italic">transformación.</span></h2>
-            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">Deja de perder ventas por un ecosistema digital deficiente. Habla directamente con nuestro equipo por WhatsApp y cuéntanos sobre tu negocio.</p>
-            
-            <div class="flex justify-center mt-8">
-                <a href="https://wa.me/525643132403" target="_blank" rel="noopener noreferrer" class="bg-[#25D366] hover:bg-[#1fad53] text-white px-8 py-5 md:px-12 rounded-full font-bold text-lg md:text-xl flex items-center gap-3 transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(37,211,102,0.25)]">
-                    <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 md:w-8 md:h-8"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.552 4.195 1.599 6.02L.031 24l6.096-1.599A11.968 11.968 0 0 0 12.031 24c6.645 0 12.031-5.385 12.031-12.031C24.062 5.385 18.677 0 12.031 0zm3.896 17.21c-.179.502-.924.966-1.428 1.054-.504.088-1.155.234-3.693-.815-3.05-1.261-5.02-4.421-5.17-4.622-.15-.201-1.238-1.645-1.238-3.136 0-1.49.774-2.227 1.05-2.528.276-.301.602-.376.802-.376.201 0 .401.002.576.01.196.009.46-.076.719.551.276.666.94 2.296 1.028 2.472.088.176.15.382.025.632-.125.251-.188.401-.376.627-.188.226-.388.489-.563.666-.188.188-.388.388-.176.753.213.364.951 1.569 2.053 2.551 1.423 1.266 2.613 1.656 2.977 1.832.364.176.576.15.789-.088.213-.238.924-1.079 1.174-1.45.251-.371.502-.308.839-.188.337.119 2.13.998 2.494 1.186.364.188.602.276.689.427.088.15.088.878-.09 1.38z"/></svg>
-                    Chatear por WhatsApp
-                </a>
-            </div>
-            
-            <div class="flex items-center justify-center gap-4 text-sm text-gray-500 mt-10">
-                <span class="flex items-center gap-1"><i data-lucide="zap" class="w-4 h-4 text-neon"></i> Respuesta rápida</span>
-                <span>•</span>
-                <span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4 text-neon"></i> Atención directa</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 bg-[#020202] py-16">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
-                <div class="text-center md:text-left flex flex-col items-center md:items-start">
-                    <img src="/logo.png" alt="Lumen Lab logo" class="h-12 md:h-16 w-auto object-contain mb-2">
-                    <p class="text-gray-500 mt-2">Estrategia que se ve. Resultados que se sienten.</p>
-                </div>
-                <div class="flex gap-6">
-
-<!-- WHATSAPP -->
-<a href="https://wa.me/525643132403" target="_blank"
-class="w-12 h-12 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-lg shadow-[#25D366]/60 hover:scale-110 hover:shadow-2xl transition duration-300">
-
-<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-<path d="M20.52 3.48A11.78 11.78 0 0 0 12.04 0C5.5 0 .14 5.35.14 11.94c0 2.1.55 4.15 1.6 5.95L0 24l6.3-1.64a11.9 11.9 0 0 0 5.74 1.47h.01c6.55 0 11.9-5.35 11.9-11.94 0-3.18-1.24-6.17-3.43-8.41zM12.05 21.3a9.3 9.3 0 0 1-4.73-1.3l-.34-.2-3.73.97.99-3.63-.22-.37a9.32 9.32 0 0 1-1.43-4.95c0-5.17 4.22-9.38 9.41-9.38 2.51 0 4.87.98 6.65 2.77a9.32 9.32 0 0 1 2.75 6.64c0 5.17-4.22 9.38-9.35 9.38zm5.12-7.03c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.7.9-.86 1.09-.16.19-.32.21-.6.07-.28-.14-1.18-.43-2.25-1.37-.83-.74-1.4-1.66-1.56-1.94-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.16.19-.28.28-.47.09-.19.05-.35-.02-.49-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.47.07-.71.35-.25.28-.94.92-.94 2.25 0 1.33.97 2.62 1.11 2.8.14.19 1.91 2.92 4.62 4.1.64.28 1.14.45 1.53.58.64.2 1.22.17 1.68.1.51-.08 1.65-.67 1.88-1.32.23-.65.23-1.2.16-1.32-.07-.12-.25-.19-.53-.33z"/>
-</svg>
-
-</a>
-
-<!-- INSTAGRAM -->
-<a href="https://www.instagram.com/lumenlabmx" target="_blank"
-class="w-12 h-12 rounded-full flex items-center justify-center bg-[#DFFF00] text-black shadow-lg shadow-[#DFFF00]/60 hover:scale-110 hover:shadow-2xl hover:shadow-[#DFFF00]/80 transition duration-300">
-
-<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-<path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm5 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm6.5-1.8a1 1 0 1 1-1-1 1 1 0 0 1 1 1z"/>
-</svg>
-
-</a>
-
-<!-- FACEBOOK -->
-<a href="https://www.facebook.com/lumenlabmx" target="_blank"
-class="w-12 h-12 rounded-full flex items-center justify-center bg-[#DFFF00] text-black shadow-lg shadow-[#DFFF00]/60 hover:scale-110 hover:shadow-2xl hover:shadow-[#DFFF00]/80 transition duration-300">
-
-<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-<path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2.7v-2.9h2.7V9.5c0-2.7 1.6-4.2 4-4.2 1.2 0 2.4.2 2.4.2v2.7h-1.4c-1.4 0-1.8.8-1.8 1.7v2h3.1l-.5 2.9h-2.6v7A10 10 0 0 0 22 12"/>
-</svg>
-
-</a>
+<div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
+<a class="bg-neon text-black px-6 py-4 rounded-full btn">WhatsApp</a>
+<a class="border border-white/20 px-6 py-4 rounded-full">Ver casos</a>
+</div>
 
 </div>
-                    
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row justify-between items-center border-t border-white/5 pt-8 text-sm text-gray-600">
-                <p>&copy; 2026 Lumen Lab. Todos los derechos reservados.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white transition-colors">Aviso Legal</a>
-                    <a href="#" class="hover:text-white transition-colors">Política de Privacidad</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+</header>
 
-    <!-- Botón Flotante WhatsApp -->
-    <a href="https://wa.me/525643132403" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-[18px] rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 hover:shadow-[0_4px_25px_rgba(37,211,102,0.6)] transition-all duration-300 flex items-center justify-center group">
-        <svg fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.552 4.195 1.599 6.02L.031 24l6.096-1.599A11.968 11.968 0 0 0 12.031 24c6.645 0 12.031-5.385 12.031-12.031C24.062 5.385 18.677 0 12.031 0zm3.896 17.21c-.179.502-.924.966-1.428 1.054-.504.088-1.155.234-3.693-.815-3.05-1.261-5.02-4.421-5.17-4.622-.15-.201-1.238-1.645-1.238-3.136 0-1.49.774-2.227 1.05-2.528.276-.301.602-.376.802-.376.201 0 .401.002.576.01.196.009.46-.076.719.551.276.666.94 2.296 1.028 2.472.088.176.15.382.025.632-.125.251-.188.401-.376.627-.188.226-.388.489-.563.666-.188.188-.388.388-.176.753.213.364.951 1.569 2.053 2.551 1.423 1.266 2.613 1.656 2.977 1.832.364.176.576.15.789-.088.213-.238.924-1.079 1.174-1.45.251-.371.502-.308.839-.188.337.119 2.13.998 2.494 1.186.364.188.602.276.689.427.088.15.088.878-.09 1.38z"/></svg>
-        <span class="absolute right-full mr-4 bg-white text-dark font-medium text-sm px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">Inicia un proyecto con nosotros</span>
-    </a>
+<!-- TRUST BAR -->
+<section class="py-10 text-center text-gray-500 text-sm">
+Confiado por +50 marcas
+</section>
 
-    <!-- Scripts -->
-    <script>
-        // Inicializar iconos Lucide
-        lucide.createIcons();
+<!-- SERVICIOS -->
+<section class="py-20 max-w-6xl mx-auto px-5">
+<h2 class="text-4xl font-bold text-center mb-12">Servicios</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<div class="card p-6 rounded-xl">Branding</div>
+<div class="card p-6 rounded-xl">Web</div>
+<div class="card p-6 rounded-xl">Ads</div>
+</div>
+</section>
 
-        // Navbar bg change on scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('py-2');
-                navbar.classList.remove('py-4');
-            } else {
-                navbar.classList.add('py-4');
-                navbar.classList.remove('py-2');
-            }
-        });
+<!-- CTA STRIP -->
+<section class="py-16 text-center">
+<h2 class="text-3xl mb-6">¿Listo para crecer?</h2>
+<a class="bg-neon text-black px-8 py-4 rounded-full btn">Iniciar proyecto</a>
+</section>
 
-        // Mobile Menu Logic
-        const menuToggle = document.getElementById('menu-toggle');
-        const closeMenu = document.getElementById('close-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
+<!-- STICKY CTA MOBILE -->
+<div class="sticky-cta sm:hidden">
+<a class="bg-neon text-black px-6 py-3 rounded-full shadow-lg">WhatsApp</a>
+</div>
 
-        function toggleMenu() {
-            mobileMenu.classList.toggle('translate-x-full');
-            document.body.classList.toggle('overflow-hidden');
-        }
+<script>
+lucide.createIcons();
 
-        if (menuToggle && closeMenu && mobileMenu) {
-            menuToggle.addEventListener('click', toggleMenu);
-            closeMenu.addEventListener('click', toggleMenu);
-            
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', toggleMenu);
-            });
-        }
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('active')})})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+</script>
 
-        // Intersection Observer para animaciones Reveal
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach((element) => {
-            observer.observe(element);
-        });
-
-        // Parallax sutil en elementos del portfolio
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.portfolio-item');
-            const mouseX = e.clientX / window.innerWidth - 0.5;
-            const mouseY = e.clientY / window.innerHeight - 0.5;
-
-            cards.forEach(card => {
-                const bg = card.querySelector('.portfolio-bg');
-                // Movimiento muy sutil en dirección opuesta
-                bg.style.transform = `translate(${mouseX * -20}px, ${mouseY * -20}px) scale(1.05)`;
-            });
-        });
-    </script>
 </body>
 </html>
