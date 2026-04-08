@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lumen Lab | Estrategia, Diseño y Resultados</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,97 +11,106 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['Inter'],display:['Syne']},colors:{neon:'#ccff00',dark:'#030303'}}}}
+tailwind.config={
+  theme:{
+    extend:{
+      fontFamily:{sans:['Inter'],display:['Syne']},
+      colors:{neon:'#ccff00',dark:'#030303',card:'#0a0a0a'}
+    }
+  }
+}
 </script>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
 html,body{overflow-x:hidden;background:#030303;color:#fff}
-.noise{position:fixed;inset:0;opacity:.03;pointer-events:none;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2,h3,p{word-break:break-word}
 
-.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:.12}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;z-index:-1}
 
-.btn{transition:.25s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(204,255,0,.25)}
+/* FIX RESPONSIVE */
+.hero-title{font-size:clamp(32px,6vw,80px);line-height:1.1}
+.hero-sub{font-size:clamp(14px,3vw,20px)}
 
-.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);transition:.3s}
-.card:hover{transform:translateY(-6px);border-color:rgba(204,255,0,.5)}
-
-.reveal{opacity:0;transform:translateY(30px);transition:.7s}
-.reveal.active{opacity:1;transform:none}
-
-/* Sticky CTA */
-.sticky-cta{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:50}
-
+@media (max-width:640px){
+  header{padding-top:120px}
+  .glow-orb{width:280px!important;height:280px!important}
+}
 </style>
 </head>
 
-<body class="font-sans">
-<div class="noise"></div>
+<body class="antialiased selection:bg-neon selection:text-dark">
 
 <!-- NAV -->
-<nav class="fixed w-full top-0 bg-black/70 backdrop-blur border-b border-white/10 z-40">
-<div class="max-w-6xl mx-auto px-5 h-16 flex justify-between items-center">
-<img src="/logo.png" class="h-8">
-<button id="menuBtn"><i data-lucide="menu"></i></button>
+<nav class="fixed w-full top-0 z-40 bg-dark/80 backdrop-blur-md border-b border-white/10">
+<div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<img src="/logo.png" class="h-10">
+<div class="hidden md:flex gap-6 text-sm text-gray-400">
+<a href="#servicios">Servicios</a>
+<a href="#resultados">Resultados</a>
+<a href="#contacto">Contacto</a>
+</div>
 </div>
 </nav>
 
 <!-- HERO -->
-<header class="min-h-screen flex items-center justify-center text-center px-5 relative">
-<div class="glow w-[300px] h-[300px] bg-neon top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+<header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
 
-<div class="max-w-3xl">
+<div class="glow-orb w-[500px] h-[500px] bg-neon top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
 
-<h1 class="text-4xl sm:text-6xl font-display font-bold leading-tight mb-6 reveal">
-Escalamos marcas con 
-<span class="text-neon">diseño y estrategia</span>
+<div class="max-w-5xl mx-auto px-6 text-center">
+
+<h1 class="hero-title font-display font-bold mb-6">
+Agencia digital <span class="text-gray-400">360º para</span><br class="hidden sm:block">
+<span class="text-neon">marcas líderes</span>
 </h1>
 
-<p class="text-gray-400 mb-8 reveal">
-Web, branding y marketing en un solo ecosistema.
+<p class="hero-sub text-gray-400 max-w-2xl mx-auto mb-10">
+Centraliza todo tu crecimiento en un solo partner estratégico.
 </p>
 
-<div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
-<a class="bg-neon text-black px-6 py-4 rounded-full btn">WhatsApp</a>
-<a class="border border-white/20 px-6 py-4 rounded-full">Ver casos</a>
+<div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+<a href="https://wa.me/525643132403" class="bg-neon text-black px-6 py-4 rounded-full font-semibold w-full sm:w-auto">WhatsApp</a>
+<a href="#resultados" class="border border-white/20 px-6 py-4 rounded-full w-full sm:w-auto">Casos</a>
 </div>
 
 </div>
 </header>
 
-<!-- TRUST BAR -->
-<section class="py-10 text-center text-gray-500 text-sm">
-Confiado por +50 marcas
-</section>
-
 <!-- SERVICIOS -->
-<section class="py-20 max-w-6xl mx-auto px-5">
-<h2 class="text-4xl font-bold text-center mb-12">Servicios</h2>
+<section id="servicios" class="py-24 px-6 max-w-7xl mx-auto">
+<h2 class="text-4xl md:text-5xl font-display font-bold mb-12 text-center">Servicios</h2>
 <div class="grid md:grid-cols-3 gap-6">
-<div class="card p-6 rounded-xl">Branding</div>
-<div class="card p-6 rounded-xl">Web</div>
-<div class="card p-6 rounded-xl">Ads</div>
+<div class="p-8 border border-white/10 rounded-2xl">Branding</div>
+<div class="p-8 border border-white/10 rounded-2xl">Web</div>
+<div class="p-8 border border-white/10 rounded-2xl">Marketing</div>
 </div>
 </section>
 
-<!-- CTA STRIP -->
-<section class="py-16 text-center">
-<h2 class="text-3xl mb-6">¿Listo para crecer?</h2>
-<a class="bg-neon text-black px-8 py-4 rounded-full btn">Iniciar proyecto</a>
+<!-- RESULTADOS -->
+<section id="resultados" class="py-24 px-6 max-w-7xl mx-auto">
+<h2 class="text-4xl md:text-5xl font-display font-bold mb-12 text-center">Resultados</h2>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="p-8 border border-white/10 rounded-2xl">
+<p class="text-neon text-3xl font-bold">+185%</p>
+<p class="text-gray-400">Suscripciones</p>
+</div>
+<div class="p-8 border border-white/10 rounded-2xl">
+<p class="text-neon text-3xl font-bold">5.8x</p>
+<p class="text-gray-400">ROAS</p>
+</div>
+</div>
 </section>
 
-<!-- STICKY CTA MOBILE -->
-<div class="sticky-cta sm:hidden">
-<a class="bg-neon text-black px-6 py-3 rounded-full shadow-lg">WhatsApp</a>
-</div>
+<!-- CTA -->
+<section id="contacto" class="py-24 text-center">
+<h2 class="text-4xl md:text-6xl font-display font-bold mb-6">Trabajemos juntos</h2>
+<a href="https://wa.me/525643132403" class="bg-neon text-black px-8 py-4 rounded-full font-bold">Contactar</a>
+</section>
 
 <script>
 lucide.createIcons();
-
-const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('active')})})
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
 </script>
 
 </body>
